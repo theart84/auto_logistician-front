@@ -1,47 +1,36 @@
-import {Button, Col, Container, Row, Table} from "react-bootstrap";
+import {Button, Col, Container, Form, Modal, Row, Spinner, Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
-
-const tableHead = ['#', 'Номер заявки', 'Дата', 'Название фирмы', 'ФИО перевозчика', 'Контактный телефон', 'АТИ код', 'Комментарий']
-const hashMap = ['_id', 'requisitionNumber', 'requisitionCreate', 'companyName', 'nameOfCarrier', 'phoneCarrier', 'atiCode', 'comments']
+import {useDispatch, useSelector} from "react-redux";
+import {fetchRequisitionData} from "../../store/actions/requisitionActions";
+import AddNewRequisition from "../AddNewRequisition/AddNewRequisition";
 
 const Content = () => {
-  const [requisition, setRequisition] = useState([]);
+  const requisition = useSelector(state => state.requisition.requisition);
+  const preloader = useSelector(state => state.ui.preloader);
+  const tableHead = useSelector(state => state.requisition.tableHead);
+  const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
 
-  useEffect(async () => {
-    const fetchData = async () => {
-      let response = await fetch('http://localhost:5000/api/requisitions');
-      response = await response.json()
-      setRequisition([...response.requsition])
-    }
-    fetchData()
-  }, [])
+  useEffect(() => {
+    dispatch(fetchRequisitionData());
+  }, [dispatch]);
 
-  const hashMap1 = requisition.reduce((acc, prev) => {
-    const result = Object.entries(prev).reduce((acc, [key, value]) => {
-      const idx = hashMap.indexOf(key);
-      acc[idx] = [key, value];
-      return acc;
-    }, [])
-    acc.push(result);
-    return acc;
-  },[])
-
-  const markupRow1 = hashMap1.map((item, index) => {
-    const result = item.map(cell  => {
-        let value = cell[1];
-        if (cell[0] === '_id') {
-          value = index + 1
-        }
-        if (cell[0] === 'requisitionCreate') {
-          value = new Date(+cell[1]).toLocaleString();
-        }
-        return (<td
-          key={Math.random()}
-          className="text-center"
-          data-type={cell[0]}
-        >
-          {value}
-        </td>)
+  const markupRow1 = requisition.map((item, index) => {
+    const result = item.map(cell => {
+      let value = cell[1];
+      if (cell[0] === '_id') {
+        value = index + 1
+      }
+      if (cell[0] === 'dateReceivingRequisition') {
+        value = new Date(cell[1]).toLocaleString();
+      }
+      return (<td
+        key={Math.random()}
+        className="text-center"
+        data-type={cell[0]}
+      >
+        {value}
+      </td>)
     })
     return (
       <tr
@@ -53,30 +42,42 @@ const Content = () => {
     )
   })
 
+  const onClickHandler = (event) => {
+    console.log(event)
+    setShow(true)
+  }
+
+  const onHideModal = () => {
+    setShow(false);
+  }
+
   return (
-    <Container>
-      <Row className="mb-5">
-        <Col>
-          <Button className="btn btn-small" variant="primary">Добавить заявку</Button>{' '}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Table striped bordered hover>
-            <thead>
-            <tr>
-              {tableHead.map((item, index) => (
-                <th key={Date.now() + Math.random()} className="text-center">{item}</th>
-              ))}
-            </tr>
-            </thead>
-            <tbody>
-            {markupRow1}
-            </tbody>
-          </Table>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {show && <AddNewRequisition show={show} onHide={onHideModal}/>}
+      <Container>
+        <Row className="mb-5">
+          <Col>
+            <Button className="btn btn-small" variant="primary" onClick={onClickHandler}>Добавить заявку</Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            {preloader ? <Spinner animation="border" variant="primary" className="d-block ml-auto mr-auto"/> : <Table striped bordered hover>
+              <thead>
+              <tr>
+                {tableHead.map((item, index) => (
+                  <th key={Date.now() + Math.random()} className="text-center">{item}</th>
+                ))}
+              </tr>
+              </thead>
+              <tbody>
+              {markupRow1}
+              </tbody>
+            </Table>}
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
 
