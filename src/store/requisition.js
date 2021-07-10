@@ -2,6 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
   requisition: [],
+  currentRequisitionId: null,
+  currentRequisition: {},
   tableHead: ['#', 'Номер заявки', 'Дата', 'Название фирмы', 'ФИО перевозчика', 'Контактный телефон', 'АТИ код', 'Комментарий'],
 }
 
@@ -10,9 +12,16 @@ const requisitionSlice = createSlice({
   initialState,
   reducers: {
     initialFetch(state, action) {
-      console.log(action.payload)
       state.requisition = action.payload;
-
+    },
+    updateRequisitions(state, action) {
+      state.requisition = action.payload;
+    },
+    choiceCurrentRequisition(state, action) {
+      state.currentRequisitionId = action.payload
+    },
+    getCurrentRequisitionById(state, action) {
+     state.currentRequisition = action.payload;
     }
   }
 });

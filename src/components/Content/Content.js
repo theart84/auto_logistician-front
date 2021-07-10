@@ -1,20 +1,47 @@
-import {Button, Col, Container, Form, Modal, Row, Spinner, Table} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import {Button, Col, Container, Row, Spinner, Table} from "react-bootstrap";
+import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchRequisitionData} from "../../store/actions/requisitionActions";
 import AddNewRequisition from "../AddNewRequisition/AddNewRequisition";
+import {actionsUI} from "../../store/ui";
+import {actionRequisition} from "../../store/requisition";
+import ContextMenu from "../ContextMenu/ContextMenu";
+import EditRequisition from "../EditRequisition/EditRequisition";
 
 const Content = () => {
   const requisition = useSelector(state => state.requisition.requisition);
+  const currentRequisitionId = useSelector(state => state.requisition.currentRequisitionId);
+  const contextMenu = useSelector(state => state.ui.contextMenu);
   const preloader = useSelector(state => state.ui.preloader);
   const tableHead = useSelector(state => state.requisition.tableHead);
-  const [show, setShow] = useState(false);
+  const showCreateModal = useSelector(state => state.ui.showCreateModal);
+  const showEditModal = useSelector(state => state.ui.showEditModal);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchRequisitionData());
   }, [dispatch]);
 
+  const onClickHandler = () => {
+    dispatch(actionsUI.showCreateModal());
+  }
+
+  const onLeftButtonClickHandler = () => {
+    dispatch(actionsUI.hideContextMenu());
+  }
+
+  const onHideModal = () => {
+    dispatch(actionsUI.hideCreateModal());
+    dispatch(actionsUI.hideEditModal());
+  }
+
+  const onContextMenuHandler = (event) => {
+    event.preventDefault();
+    const { id } = event.currentTarget.dataset;
+    const {clientX, clientY} = event;
+    dispatch(actionRequisition.choiceCurrentRequisition(id))
+    dispatch(actionsUI.showContextMenu({clientX, clientY}))
+  }
   const markupRow1 = requisition.map((item, index) => {
     const result = item.map(cell => {
       let value = cell[1];
@@ -24,6 +51,9 @@ const Content = () => {
       if (cell[0] === 'dateReceivingRequisition') {
         value = new Date(cell[1]).toLocaleString();
       }
+      if (cell[0] === 'atiCode') {
+        value = <a style={{color: 'black', textDecoration: 'none'}} href={`https://ati.su/firms/${cell[1]}/info`}>{cell[1]}</a>
+      }
       return (<td
         key={Math.random()}
         className="text-center"
@@ -32,28 +62,24 @@ const Content = () => {
         {value}
       </td>)
     })
+
     return (
       <tr
-        key={item._id}
-        data-id={item._id}
+        key={item[0][1]}
+        data-id={item[0][1]}
+        onClick={onLeftButtonClickHandler}
+        onContextMenu={onContextMenuHandler}
       >
         {result}
       </tr>
     )
   })
 
-  const onClickHandler = (event) => {
-    console.log(event)
-    setShow(true)
-  }
-
-  const onHideModal = () => {
-    setShow(false);
-  }
-
   return (
     <>
-      {show && <AddNewRequisition show={show} onHide={onHideModal}/>}
+      {showCreateModal && <AddNewRequisition show={showCreateModal} onHide={onHideModal}/>}
+      {showEditModal && <EditRequisition id={currentRequisitionId} show={showEditModal} onHide={onHideModal}/>}
+      {contextMenu.isShow && <ContextMenu id={currentRequisitionId} top={contextMenu.clientY} left={contextMenu.clientX}/>}
       <Container>
         <Row className="mb-5">
           <Col>

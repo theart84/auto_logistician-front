@@ -1,11 +1,11 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import ru from 'date-fns/locale/ru';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {checkFormValidity} from "../../utils/checkFormValidity";
-import {createRequisition} from "../../store/actions/requisitionActions";
-import {useDispatch} from "react-redux";
-
+import {getRequisitionById} from "../../store/actions/requisitionActions";
+import {useDispatch, useSelector} from "react-redux";
+import {actionsUI} from "../../store/ui";
 
 const initialState = {
   requisitionNumber: '',
@@ -16,11 +16,23 @@ const initialState = {
   comments: '',
 }
 
-const AddNewRequisition = (props) => {
+const EditRequisition = (props) => {
   const [inputs, setInputs] = useState(initialState);
   const [isValid, setIsValid] = useState(false);
   const [date, setDate] = useState('');
   const dispatch = useDispatch();
+  const currentRequisition = useSelector(state => state.requisition.currentRequisition)
+
+  useEffect(() => {
+    dispatch(actionsUI.hideContextMenu());
+    dispatch(getRequisitionById(props.id));
+  }, [dispatch, props.id]);
+
+  useEffect(() => {
+   setInputs(currentRequisition);
+   setDate(currentRequisition.dateReceivingRequisition);
+   setIsValid(true);
+  }, [currentRequisition]);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -28,10 +40,11 @@ const AddNewRequisition = (props) => {
     setDate('');
     const payload = {
       ...inputs,
-      dateReceivingRequisition: date.getTime(),
+      dateReceivingRequisition: typeof date === 'number' ? date : date.getTime(),
     }
     props.onHide();
-    dispatch(createRequisition(payload));
+    console.log(payload)
+    // dispatch(createRequisition(payload));
   }
 
   const onChangeHandler = (event) => {
@@ -47,6 +60,7 @@ const AddNewRequisition = (props) => {
 
   const onBlurHandler = () => {
     const isValid = checkFormValidity(inputs) && date;
+    console.log(isValid)
     if (isValid) {
       setIsValid(true);
     } else {
@@ -154,4 +168,4 @@ const AddNewRequisition = (props) => {
   )
 }
 
-export default AddNewRequisition;
+export default EditRequisition;
