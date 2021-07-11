@@ -3,7 +3,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialState = {
   requisition: [],
   currentRequisitionId: null,
-  currentRequisition: {},
+  currentRequisition: null,
   tableHead: ['#', 'Номер заявки', 'Дата', 'Название фирмы', 'ФИО перевозчика', 'Контактный телефон', 'АТИ код', 'Комментарий'],
 }
 

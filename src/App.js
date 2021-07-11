@@ -1,12 +1,36 @@
 import './App.css';
-import Header from "./components/Header/Header";
-import Content from "./components/Content/Content";
+import {Switch, Route, Redirect} from 'react-router-dom'
+import Requisition from "./pages/Requisition";
+import Layout from "./components/Layout/Layout";
+import RequisitionDetail from "./pages/RequisitionDetail";
+import RequisitionEdit from "./pages/RequisitionEdit";
+import NewRequisition from "./pages/NewRequisition";
 
 function App() {
   return (
     <>
-      <Header />
-      <Content />
+      <Layout>
+        <Switch>
+          <Route path="/" exact>
+            <Redirect to="/requisition" />
+          </Route>
+          <Route path="/requisition" exact>
+            <Requisition />
+          </Route>
+          <Route path="/requisition/create" exact>
+            <NewRequisition />
+          </Route>
+          <Route path="/requisition/:requisitionId" exact>
+            <RequisitionDetail />
+          </Route>
+          <Route path="/requisition/edit/:requisitionId">
+            <RequisitionEdit />
+          </Route>
+          <Route path="*">
+            <div>This Page not found!</div>
+          </Route>
+        </Switch>
+      </Layout>
     </>
   );
 }
