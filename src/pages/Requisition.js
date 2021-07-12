@@ -5,7 +5,7 @@ import RequisitionTableHOC from "../components/RequisitionTableHOC/RequisitionTa
 const Requisition = () => {
   return (
     <>
-      <Container>
+      <Container style={{maxWidth: `${1400}px`}}>
         <AddNewRequisitionButton />
         <RequisitionTableHOC />
       </Container>

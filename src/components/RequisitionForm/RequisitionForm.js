@@ -1,26 +1,72 @@
-import {Button, Form} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
+import {editRequisition} from "../../store/actions/requisitionActions";
+import {checkFormValidity} from "../../utils/checkFormValidity";
+import {useState} from "react";
+import {Link, useParams} from "react-router-dom";
 
 const RequisitionForm = (props) => {
+  const [inputs, setInputs] = useState(props.inputs);
+  const [isValid, setIsValid] = useState(false);
+  const [date, setDate] = useState(props.inputs?.dateReceivingRequisition);
+  const params = useParams();
+
+  if (!props.inputs) {
+    return (
+      <>
+        <Row className="justify-content-center">
+          <p>Что-то пошло не так...</p>
+        </Row>
+        <Row className="justify-content-center">
+          <Link className="btn btn-primary" to={`/requisition/${params.requisitionId}`}>Вернуться к просмотру заявки</Link>
+        </Row>
+      </>
+    )
+  }
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    const payload = {
+      ...inputs,
+      dateReceivingRequisition: typeof date === 'number' ? date : date.getTime(),
+    }
+    props.onSubmit(payload);
+  }
+  const onChangeHandler = (event) => {
+    const {id, value} = event.target;
+    setInputs((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }))
+  }
+  const onChangeDateHandler = (value) => {
+    setDate(new Date(value.getTime()))
+  }
+
+  const onBlurHandler = () => {
+    const isValidity = checkFormValidity(inputs) && !!date;
+    setIsValid(isValidity);
+  }
+
   return (
     <>
-      <Form onSubmit={props.onSubmit}>
+      <Form onSubmit={onSubmitHandler}>
         <Form.Group className="mb-3" controlId="requisitionNumber">
           <Form.Label>Номер заявки</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введите номер заявки"
-            value={props.requisitionNumber}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.requisitionNumber}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="dateReceivingRequisition">
           <Form.Label>Дата и время получения заявки</Form.Label>
           <DatePicker
-            selected={props.date}
-            onChange={props.onChangeDateHandler}
-            onBlur={props.onBlur}
+            selected={date}
+            onChange={onChangeDateHandler}
+            onBlur={onBlurHandler}
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={15}
@@ -35,36 +81,36 @@ const RequisitionForm = (props) => {
           <Form.Control
             type="text"
             placeholder="Введите название перевозчика"
-            value={props.companyName}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.companyName}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="nameOfCarrier">
           <Form.Label>ФИО перевозчика</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введите ФИО перевозчика"
-            value={props.nameOfCarrier}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.nameOfCarrier}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="phoneCarrier">
           <Form.Label>Контактный номер перевозчика</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введите телефон перевозчика"
-            value={props.phoneCarrier}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.phoneCarrier}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="atiCode">
           <Form.Label>АТИ код перевозчика</Form.Label>
           <Form.Control
             type="text"
             placeholder="Введите код из системы АТИ"
-            value={props.atiCode}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.atiCode}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Form.Group className="mb-3" controlId="comments">
           <Form.Label>Комментарий</Form.Label>
@@ -72,9 +118,9 @@ const RequisitionForm = (props) => {
             as="textarea"
             rows={3}
             placeholder="Напишите свой комментарий"
-            value={props.comments}
-            onChange={props.onChange}
-            onBlur={props.onBlur}/>
+            value={inputs.comments}
+            onChange={onChangeHandler}
+            onBlur={onBlurHandler}/>
         </Form.Group>
         <Button
           variant="primary"
@@ -86,7 +132,7 @@ const RequisitionForm = (props) => {
         <Button
           variant="primary"
           type="submit"
-          disabled={!props.isValid}>
+          disabled={!isValid}>
           {props.titleSubmitButton}
         </Button>
       </Form>

@@ -14,6 +14,8 @@ const RequisitionTableHOC = () => {
     dispatch(fetchRequisitionData());
   }, [dispatch]);
 
+
+
   return (
     <Row>
       <Col>

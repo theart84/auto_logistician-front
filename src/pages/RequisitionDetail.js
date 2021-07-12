@@ -3,6 +3,7 @@ import {useEffect} from "react";
 import {useParams, useHistory} from 'react-router-dom'
 import {Button, Card, Container} from "react-bootstrap";
 import {deleteRequisition, getRequisitionById} from "../store/actions/requisitionActions";
+import {actionRequest} from "../store/request";
 
 const RequisitionDetail = () => {
   const currentRequisition = useSelector(state => state.requisition.currentRequisition);
@@ -25,6 +26,7 @@ const RequisitionDetail = () => {
   }
 
   const onEditHandler = () => {
+    dispatch(actionRequest.initialRequest())
     history.push(`/requisition/edit/${id}`);
   }
 
@@ -69,7 +71,8 @@ const RequisitionDetail = () => {
           </Card.Text>
           <Card.Text className="font-weight-bold">ATI код: <span
             className="font-weight-normal">
-            {currentRequisition.atiCode}
+            <a style={{color: 'black', textDecoration: 'underline'}}
+                href={`https://ati.su/firms/${currentRequisition.atiCode}/info`}>{currentRequisition.atiCode}</a>
           </span>
           </Card.Text>
           <Card.Text className="font-weight-bold">Комментарии: <span

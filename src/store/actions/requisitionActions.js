@@ -1,6 +1,7 @@
 import {actionRequisition} from "../requisition";
 import {serializeRequisition} from "../../utils/serializeRequisitionData";
 import {actionsUI} from "../ui";
+import {actionRequest} from "../request";
 
 export const fetchRequisitionData = () => {
   return async (dispatch) => {
@@ -83,10 +84,13 @@ export const getRequisitionById = (id) => {
       return request.json()
     }
     try {
+      dispatch(actionRequest.pendingRequest());
       const response = await fetchData();
       dispatch(actionRequisition.getCurrentRequisitionById(response.requisition));
+      dispatch(actionRequest.fulfilledRequest());
     } catch (error) {
       console.log(error);
+      dispatch(actionRequest.rejectRequest());
     }
   }
 }
@@ -108,9 +112,12 @@ export const editRequisition = (requisition) => {
     }
     try {
       const response = await fetchData();
+      dispatch(actionRequest.pendingRequest());
       const transformedArray = serializeRequisition(response.requisition);
       dispatch(actionRequisition.updateRequisitions(transformedArray));
+      dispatch(actionRequest.fulfilledRequest());
     } catch (error) {
+      dispatch(actionRequest.rejectRequest());
       console.log(error);
     }
   }

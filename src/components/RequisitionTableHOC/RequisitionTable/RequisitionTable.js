@@ -11,15 +11,11 @@ const RequisitionTable = ({requisition, head}) => {
   const td = requisition.map((item, index) => {
     const result = item.map(cell => {
       let value = cell[1];
-      if (cell[0] === '_id') {
-        value = index + 1
-      }
-      if (cell[0] === 'dateReceivingRequisition') {
-        value = new Date(cell[1]).toLocaleString();
-      }
-      if (cell[0] === 'atiCode') {
-        value = <a style={{color: 'black', textDecoration: 'none'}}
-                   href={`https://ati.su/firms/${cell[1]}/info`}>{cell[1]}</a>
+      switch (cell[0]) {
+        case '_id': value = index + 1; break;
+        case 'dateReceivingRequisition': value = value = new Date(cell[1]).toLocaleString(); break;
+        case 'comments': value = value.length > 15 ?  `${value.slice(0, 15)}...` : value; break;
+        default: break;
       }
       return (<td
         key={Math.random()}
@@ -28,7 +24,7 @@ const RequisitionTable = ({requisition, head}) => {
       >
         {value}
       </td>)
-    })
+    });
 
     return (
       <tr
@@ -38,15 +34,15 @@ const RequisitionTable = ({requisition, head}) => {
       >
         {result}
       </tr>
-    )
-  })
+    );
+  });
 
   const th = head.map((item) => (
     <th key={Date.now() + Math.random()} className="text-center">{item}</th>
   ))
 
   return (
-    <Table striped bordered hover>
+    <Table striped bordered hover responsive="lg">
       <thead>
         <tr>
           {th}
