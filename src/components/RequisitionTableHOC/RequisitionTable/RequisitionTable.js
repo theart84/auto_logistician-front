@@ -1,24 +1,36 @@
 import {useHistory} from 'react-router-dom';
 import {Table} from "react-bootstrap";
+import {serializeRequisition} from "../../../utils/serializeRequisitionData";
+import SearchRequisition from "../../SearchRequisition/SearchRequisition";
 
 const RequisitionTable = ({requisition, head}) => {
   const history = useHistory();
+
   const onClickHandler = (event) => {
-    const { id } = event.currentTarget.dataset;
+    const {id} = event.currentTarget.dataset;
     history.push(`/requisition/${id}`)
   }
 
-  const td = requisition.map((item, index) => {
+  const serializeData = serializeRequisition(requisition);
+
+  const td = serializeData.map((item, index) => {
     const result = item.map(cell => {
       let value = cell[1];
       switch (cell[0]) {
-        case '_id': value = index + 1; break;
-        case 'dateReceivingRequisition': value = value = new Date(cell[1]).toLocaleString(); break;
-        case 'comments': value = value.length > 15 ?  `${value.slice(0, 15)}...` : value; break;
-        default: break;
+        case '_id':
+          value = index + 1;
+          break;
+        case 'dateReceivingRequisition':
+          value = value = new Date(cell[1]).toLocaleString();
+          break;
+        case 'comments':
+          value = value.length > 15 ? `${value.slice(0, 15)}...` : value;
+          break;
+        default:
+          break;
       }
       return (<td
-        key={Math.random()}
+        key={`${item[0][1]}${Math.random()}`}
         className="text-center"
         data-type={cell[0]}
       >
@@ -42,16 +54,19 @@ const RequisitionTable = ({requisition, head}) => {
   ))
 
   return (
-    <Table striped bordered hover responsive="lg">
-      <thead>
+    <>
+      <SearchRequisition/>
+      <Table striped bordered hover responsive="lg">
+        <thead>
         <tr>
           {th}
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         {td}
-      </tbody>
-    </Table>
+        </tbody>
+      </Table>
+    </>
   )
 }
 
