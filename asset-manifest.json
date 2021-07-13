@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/auto_logistician-front/static/css/main.5ed78269.chunk.css",
+    "main.js": "/auto_logistician-front/static/js/main.4f6078bc.chunk.js",
+    "main.js.map": "/auto_logistician-front/static/js/main.4f6078bc.chunk.js.map",
+    "runtime-main.js": "/auto_logistician-front/static/js/runtime-main.24e178e7.js",
+    "runtime-main.js.map": "/auto_logistician-front/static/js/runtime-main.24e178e7.js.map",
+    "static/css/2.081f420c.chunk.css": "/auto_logistician-front/static/css/2.081f420c.chunk.css",
+    "static/js/2.540c4e1a.chunk.js": "/auto_logistician-front/static/js/2.540c4e1a.chunk.js",
+    "static/js/2.540c4e1a.chunk.js.map": "/auto_logistician-front/static/js/2.540c4e1a.chunk.js.map",
+    "static/js/3.24e8b0e5.chunk.js": "/auto_logistician-front/static/js/3.24e8b0e5.chunk.js",
+    "static/js/3.24e8b0e5.chunk.js.map": "/auto_logistician-front/static/js/3.24e8b0e5.chunk.js.map",
+    "index.html": "/auto_logistician-front/index.html",
+    "static/css/2.081f420c.chunk.css.map": "/auto_logistician-front/static/css/2.081f420c.chunk.css.map",
+    "static/css/main.5ed78269.chunk.css.map": "/auto_logistician-front/static/css/main.5ed78269.chunk.css.map",
+    "static/js/2.540c4e1a.chunk.js.LICENSE.txt": "/auto_logistician-front/static/js/2.540c4e1a.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.24e178e7.js",
+    "static/css/2.081f420c.chunk.css",
+    "static/js/2.540c4e1a.chunk.js",
+    "static/css/main.5ed78269.chunk.css",
+    "static/js/main.4f6078bc.chunk.js"
+  ]
+}
