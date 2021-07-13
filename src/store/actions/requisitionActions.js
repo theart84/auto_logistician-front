@@ -1,8 +1,7 @@
 import {actionRequisition} from "../requisition";
 import {actionsUI} from "../ui";
 import {actionRequest} from "../request";
-
-const baseURL = 'http://localhost:5000/api/requisition';
+import {baseURL} from "../../config/config";
 
 export const fetchRequisitionData = () => {
   return async (dispatch) => {

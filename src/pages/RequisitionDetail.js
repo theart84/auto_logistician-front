@@ -33,7 +33,13 @@ const RequisitionDetail = () => {
   const onDeleteHandler = () => {
     dispatch(deleteRequisition(id))
     history.push('/requisition');
-    console.log('DELETE')
+  }
+
+  const classNameCardText = {
+    className: "font-weight-bold"
+  }
+  const classSpan = {
+    className: "font-weight-normal"
   }
 
   return (
@@ -44,39 +50,75 @@ const RequisitionDetail = () => {
           {`Заявка №${currentRequisition.requisitionNumber}, ${currentRequisition.companyName}`}
         </Card.Header>
         <Card.Body>
-          <Card.Text className="font-weight-bold">Номер заявки: <span
-            className="font-weight-normal">{currentRequisition.requisitionNumber}</span></Card.Text>
           <Card.Text
-            className="font-weight-bold">Дата и время получения заявки от клиента: <span
-            className="font-weight-normal">
+            {...classNameCardText}
+          >
+            Номер заявки:
+            <span
+              {...classSpan}
+            >
+              {currentRequisition.requisitionNumber}
+            </span>
+          </Card.Text>
+          <Card.Text
+            {...classNameCardText}
+          >
+            Дата и время получения заявки от клиента:
+            <span
+              {...classSpan}
+            >
             {new Date(currentRequisition.dateReceivingRequisition).toLocaleString()}
             </span>
           </Card.Text>
           <Card.Text
-            className="font-weight-bold">Название фирмы клиента: <span
-            className="font-weight-normal">
+            {...classNameCardText}
+          >
+            Название фирмы клиента:
+            <span
+              {...classSpan}
+            >
             {currentRequisition.companyName}
             </span>
           </Card.Text>
-          <Card.Text className="font-weight-bold">ФИО перевозчика: <span
-            className="font-weight-normal">
+          <Card.Text {...classNameCardText}
+          >
+            ФИО перевозчика:
+            <span
+              {...classSpan}
+            >
             {currentRequisition.nameOfCarrier}
           </span>
           </Card.Text>
           <Card.Text
-            className="font-weight-bold">Контактный телефон перевозчика: <span
-            className="font-weight-normal">
+            className="font-weight-bold"
+          >
+            Контактный телефон перевозчика:
+            <span
+              {...classSpan}
+            >
             {currentRequisition.phoneCarrier}
             </span>
           </Card.Text>
-          <Card.Text className="font-weight-bold">ATI код: <span
-            className="font-weight-normal">
+          <Card.Text {...classNameCardText}
+          >
+            ATI код:
+            <span
+              {...classSpan}
+            >
             <a style={{color: 'black', textDecoration: 'underline'}}
-                href={`https://ati.su/firms/${currentRequisition.atiCode}/info`}>{currentRequisition.atiCode}</a>
+               href={`https://ati.su/firms/${currentRequisition.atiCode}/info`}
+            >
+              {currentRequisition.atiCode}
+            </a>
           </span>
           </Card.Text>
-          <Card.Text className="font-weight-bold">Комментарии: <span
-            className="font-weight-normal">
+          <Card.Text
+            {...classNameCardText}
+          >
+            Комментарии:
+            <span
+              {...classSpan}
+            >
             {currentRequisition.comments}
           </span>
           </Card.Text>

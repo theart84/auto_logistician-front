@@ -4,10 +4,11 @@ import ru from "date-fns/locale/ru";
 import {checkFormValidity} from "../../utils/checkFormValidity";
 import {useState} from "react";
 import {Link, useParams} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const RequisitionForm = (props) => {
   const [inputs, setInputs] = useState(props.inputs);
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState(true);
   const [date, setDate] = useState(props.inputs?.dateReceivingRequisition);
   const params = useParams();
 
@@ -137,6 +138,13 @@ const RequisitionForm = (props) => {
       </Form>
     </>
   );
+}
+
+RequisitionForm.propTypes = {
+  inputs: PropTypes.object.isRequired,
+  titleSubmitButton: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onBackHandler: PropTypes.func.isRequired
 }
 
 export default RequisitionForm;

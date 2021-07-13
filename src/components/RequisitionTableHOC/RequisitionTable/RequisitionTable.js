@@ -2,6 +2,7 @@ import {useHistory} from 'react-router-dom';
 import {Table} from "react-bootstrap";
 import {serializeRequisition} from "../../../utils/serializeRequisitionData";
 import SearchRequisition from "../../SearchRequisition/SearchRequisition";
+import PropTypes from 'prop-types';
 
 const RequisitionTable = ({requisition, head}) => {
   const history = useHistory();
@@ -63,11 +64,16 @@ const RequisitionTable = ({requisition, head}) => {
         </tr>
         </thead>
         <tbody>
-        {td}
+          {td}
         </tbody>
       </Table>
     </>
   )
+}
+
+RequisitionTable.propTypes = {
+  requisition: PropTypes.array.isRequired,
+  head: PropTypes.array.isRequired,
 }
 
 export default RequisitionTable;
