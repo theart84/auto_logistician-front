@@ -16,7 +16,7 @@ const RequisitionEdit = () => {
 
   useEffect(() => {
     if (requestStatus === 'fulfilled') {
-      history.push('/requisition');
+      history.push('/');
     }
   }, [history, requestStatus])
 

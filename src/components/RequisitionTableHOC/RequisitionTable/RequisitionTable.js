@@ -1,4 +1,5 @@
 import {useHistory} from 'react-router-dom';
+import shortid from 'shortid'
 import {Table} from "react-bootstrap";
 import {serializeRequisition} from "../../../utils/serializeRequisitionData";
 import SearchRequisition from "../../SearchRequisition/SearchRequisition";
@@ -51,7 +52,7 @@ const RequisitionTable = ({requisition, head}) => {
   });
 
   const th = head.map((item) => (
-    <th key={Date.now() + Math.random()} className="text-center">{item}</th>
+    <th key={shortid.generate()} className="text-center">{item}</th>
   ))
 
   return (

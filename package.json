@@ -17,9 +17,9 @@
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "shortid": "^2.2.16",
     "web-vitals": "^1.0.1"
   },
-  "homepage": "https://theart84.github.io/auto_logistician-front/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -43,5 +43,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://theart84.github.io/auto_logistician-front/"
 }

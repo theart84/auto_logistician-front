@@ -4,6 +4,7 @@ import {useParams, useHistory} from 'react-router-dom'
 import {Button, Card, Container} from "react-bootstrap";
 import {deleteRequisition, getRequisitionById} from "../store/actions/requisitionActions";
 import {actionRequest} from "../store/request";
+import RequisitionDetailItem from "../components/RequisitionDetailItem/RequisitionDetailItem";
 
 const RequisitionDetail = () => {
   const currentRequisition = useSelector(state => state.requisition.currentRequisition);
@@ -22,7 +23,7 @@ const RequisitionDetail = () => {
   }
 
   const onBackHandler = () => {
-    history.push('/requisition');
+    history.push('/');
   }
 
   const onEditHandler = () => {
@@ -32,14 +33,12 @@ const RequisitionDetail = () => {
 
   const onDeleteHandler = () => {
     dispatch(deleteRequisition(id))
-    history.push('/requisition');
+    history.push('/');
   }
 
-  const classNameCardText = {
-    className: "font-weight-bold"
-  }
-  const classSpan = {
-    className: "font-weight-normal"
+  const classRequisitionDetailInfo = {
+    cardText: "font-weight-bold",
+    cardSpan: "font-weight-normal d-inline-block ml-2"
   }
 
   return (
@@ -50,78 +49,42 @@ const RequisitionDetail = () => {
           {`Заявка №${currentRequisition.requisitionNumber}, ${currentRequisition.companyName}`}
         </Card.Header>
         <Card.Body>
-          <Card.Text
-            {...classNameCardText}
-          >
-            Номер заявки:
-            <span
-              {...classSpan}
-            >
-              {currentRequisition.requisitionNumber}
-            </span>
-          </Card.Text>
-          <Card.Text
-            {...classNameCardText}
-          >
-            Дата и время получения заявки от клиента:
-            <span
-              {...classSpan}
-            >
-            {new Date(currentRequisition.dateReceivingRequisition).toLocaleString()}
-            </span>
-          </Card.Text>
-          <Card.Text
-            {...classNameCardText}
-          >
-            Название фирмы клиента:
-            <span
-              {...classSpan}
-            >
-            {currentRequisition.companyName}
-            </span>
-          </Card.Text>
-          <Card.Text {...classNameCardText}
-          >
-            ФИО перевозчика:
-            <span
-              {...classSpan}
-            >
-            {currentRequisition.nameOfCarrier}
-          </span>
-          </Card.Text>
-          <Card.Text
-            className="font-weight-bold"
-          >
-            Контактный телефон перевозчика:
-            <span
-              {...classSpan}
-            >
-            {currentRequisition.phoneCarrier}
-            </span>
-          </Card.Text>
-          <Card.Text {...classNameCardText}
-          >
-            ATI код:
-            <span
-              {...classSpan}
-            >
-            <a style={{color: 'black', textDecoration: 'underline'}}
-               href={`https://ati.su/firms/${currentRequisition.atiCode}/info`}
-            >
-              {currentRequisition.atiCode}
-            </a>
-          </span>
-          </Card.Text>
-          <Card.Text
-            {...classNameCardText}
-          >
-            Комментарии:
-            <span
-              {...classSpan}
-            >
-            {currentRequisition.comments}
-          </span>
-          </Card.Text>
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.requisitionNumber}
+            title="Номер заявки"
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={new Date(currentRequisition.dateReceivingRequisition).toLocaleString()}
+            title="Дата и время получения заявки от клиента"
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.companyName}
+            title="Название фирмы клиента"
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.nameOfCarrier}
+            title="ФИО перевозчика"
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.phoneCarrier}
+            title="Контактный телефон перевозчика"
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.atiCode}
+            title="ATI код"
+            link={`https://ati.su/firms/${currentRequisition.atiCode}/info`}
+          />
+          <RequisitionDetailItem
+            {...classRequisitionDetailInfo}
+            text={currentRequisition.comments}
+            title="Комментарии"
+          />
           <Button
             variant="primary mr-3"
             onClick={onBackHandler}

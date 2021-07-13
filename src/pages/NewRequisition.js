@@ -19,11 +19,11 @@ const NewRequisition = () => {
 
   const onSubmitHandler = (payload) => {
     dispatch(createRequisition(payload));
-    history.push(`/requisition`)
+    history.push(`/`)
   }
 
   const onBackHandler = () => {
-    history.push(`/requisition`)
+    history.push(`/`)
   };
 
   return (

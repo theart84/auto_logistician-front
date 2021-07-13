@@ -1,4 +1,4 @@
-const hashMap = ['_id', 'requisitionNumber', 'dateReceivingRequisition', 'companyName', 'nameOfCarrier', 'phoneCarrier', 'atiCode', 'comments']
+import hashMap from "./hashMap";
 
 export const serializeRequisition = (value) => {
   return value.reduce((acc, prev) => {
