@@ -19,6 +19,7 @@
     "react-scripts": "4.0.3",
     "web-vitals": "^1.0.1"
   },
+  "homepage": "https://theart84.github.io/auto_logistician-front/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
